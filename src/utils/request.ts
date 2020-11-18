@@ -15,11 +15,7 @@ service.interceptors.request.use(
       ...tool.getRequestHeader()
     };
     if (!config.formData) {
-      config.data = {
-        requestBody: {
-          data: config.data || {}
-        }
-      };
+      config.data = config.data || {};
     }
     if (config.loading) {
       if (window.loadingInstance) {
@@ -40,7 +36,7 @@ service.interceptors.response.use(
   (response: any) => {
     if (response.config.loading) {
       // Loading.service().close();
-      window.loadingInstance.close();
+      // window.loadingInstance.close();
     }
     // if (response.data.code != 200) {
     //   if (!response.config.noTip) {

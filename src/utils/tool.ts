@@ -28,6 +28,10 @@ const getRequestHeader = () => {
   };
 };
 
+const getResourceUrl = url => {
+  return getServeUrl() + url;
+}
+
 const loading = () => {
   console.log('loading');
 }
@@ -66,5 +70,6 @@ export default {
   getRequestHeader,
   loading,
   msg,
-  dealJSONData
+  dealJSONData,
+  getResourceUrl
 };
