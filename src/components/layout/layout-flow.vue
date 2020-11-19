@@ -15,7 +15,7 @@
           width="40"
         />
 
-        <span class="text-h4">Ai Img</span>
+        <span class="text-h4">Ai</span>
       </div>
 
       <v-spacer></v-spacer>

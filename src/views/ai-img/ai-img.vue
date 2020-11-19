@@ -13,7 +13,8 @@
       prepend-icon="mdi-paperclip"
       @change="inputChange"
       :loading="uploadImg.loading"
-      :disabled="loading"
+      :disabled="uploadImg.loading"
+      :messages="uploadImg.loading?uploadImg.infoText[uploadImg.activeInfoIndex]:(uploadImg.activeInfoIndex?uploadImg.infoText[uploadImg.infoText.length-1]:'')"
     >
       <template v-slot:selection="{text}">
         <v-chip
@@ -24,7 +25,10 @@
       </template>
     </v-file-input>
     <v-row>
-      <v-col sm="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <template v-if="loading">
           <v-skeleton-loader
             class="mb-6"
@@ -65,8 +69,26 @@
             label="ed"
           ></v-text-field>
         </v-form>
+        <div class="text-center">
+          <v-skeleton-loader
+            v-if="loading"
+            style="display:inline-block"
+            width="100"
+            type="button"
+          ></v-skeleton-loader>
+          <v-btn
+            v-else
+            color="primary"
+            @click="run"
+            :loading="uploadBox.loading"
+            :disabled="uploadImg.loading"
+          >run</v-btn>
+        </div>
       </v-col>
-      <v-col sm="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-img
           :src="resultGif"
           max-height="260"
@@ -74,20 +96,6 @@
         ></v-img>
       </v-col>
     </v-row>
-    <div class="text-center">
-      <v-skeleton-loader
-        v-if="loading"
-        style="display:inline-block"
-        width="100"
-        type="button"
-      ></v-skeleton-loader>
-      <v-btn
-        v-if="!loading"
-        color="primary"
-        @click="run"
-        :loading="uploadBox.loading"
-      >run</v-btn>
-    </div>
   </div>
 </template>
 
@@ -105,7 +113,9 @@ export default class AiImg extends Vue {
       '图片微调并生成潜向量...',
       '处理中（此过程大约2~3分钟）...',
       '处理成功！'
-    ]
+    ],
+    activeInfoIndex: 0,
+    timer: 0
   };
 
   private uploadBox = {
@@ -158,9 +168,7 @@ export default class AiImg extends Vue {
     }, 2000);
   }
   private getSelect() {
-    this.$axios.get('/getF', {}, {
-      loading: true
-    }).then(res => {
+    this.$axios.get('/getF', {}).then(res => {
       res = res || [[], []];
       this.uploadBox.styleList = res[0] || [];
       this.uploadBox.modelNameList = res[1] || [];
@@ -169,6 +177,8 @@ export default class AiImg extends Vue {
   private inputChange(e: any) {
     if (e) {
       this.uploadImg.loading = true;
+      this.uploadImg.activeInfoIndex = 0;
+      this.createImgMessage();
       let formData = new FormData();
       formData.append('files', e);
       this.$axios.post('/up_photo', formData, {
@@ -183,12 +193,20 @@ export default class AiImg extends Vue {
       });
     }
   }
+  private createImgMessage() {
+    clearInterval(this.uploadImg.timer);
+    this.uploadImg.timer = setInterval(() => {
+      if (this.uploadImg.activeInfoIndex >= this.uploadImg.infoText.length - 2) {
+        clearInterval(this.uploadImg.timer);
+      } else {
+        this.uploadImg.activeInfoIndex++;
+      }
+    }, 1000 * 2);
+  }
   private run() {
     this.uploadBox.loading = true;
     if ((this.$refs.uploadBox as any).validate()) {
-      this.$axios.post('/edit_pic', this.uploadBox.data, {
-        loading: true
-      }).then(res => {
+      this.$axios.post('/edit_pic', this.uploadBox.data).then(res => {
         this.resultGif = this.$tool.getResourceUrl(res);
         this.uploadBox.loading = false;
       }).catch(() => {

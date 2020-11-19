@@ -17,7 +17,7 @@ service.interceptors.request.use(
     if (!config.formData) {
       config.data = config.data || {};
     }
-    if (config.loading) {
+    if (config.loading === undefined || config.loading) {
       if (window.loadingInstance) {
         window.loadingInstance.close();
       }
