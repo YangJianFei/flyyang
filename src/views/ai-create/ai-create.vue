@@ -5,10 +5,12 @@
         cols="12"
         md="6"
       >
+
         <v-skeleton-loader
           class="mb-6"
           type="paragraph"
-        ></v-skeleton-loader>
+        >
+        </v-skeleton-loader>
       </v-col>
       <v-col
         cols="12"
@@ -30,45 +32,73 @@
       </v-col>
     </v-row>
 
-    <v-form
-      v-else
-      ref="uploadBox"
-      v-model="uploadBox.form"
-    >
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-select
-            v-model="uploadBox.data.model"
-            :items="uploadBox.modelList"
-            :rules="uploadBox.rules.model"
-            label="model"
-            required
-          ></v-select>
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <v-text-field
-            type="number"
-            v-model="uploadBox.data.num"
-            :rules="uploadBox.rules.num"
-            label="num"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <div class="text-center">
-        <v-btn
-          color="primary"
-          :loading="uploadBox.loading"
-          @click="generate"
-        >Generate</v-btn>
-      </div>
-    </v-form>
+    <v-slide-x-transition>
+      <v-form
+        v-if="!loading"
+        ref="uploadBox"
+        v-model="uploadBox.form"
+      >
+        <v-row>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-select
+              v-model="uploadBox.data.model"
+              :items="uploadBox.modelList"
+              :rules="uploadBox.rules.model"
+              label="model"
+              required
+            ></v-select>
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-text-field
+              type="number"
+              v-model="uploadBox.data.num"
+              :rules="uploadBox.rules.num"
+              label="num"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <div class="text-center">
+          <v-btn
+            color="primary"
+            :loading="uploadBox.loading"
+            @click="generate"
+          >Generate</v-btn>
+        </div>
+      </v-form>
+    </v-slide-x-transition>
+    <v-slide-x-transition>
+      <div
+        class="text-center text-h5 my-5"
+        v-show="uploadBox.loading"
+      >{{uploadBox.loading?uploadBox.infoText[uploadBox.activeInfoIndex]:''}}</div>
+    </v-slide-x-transition>
+    <v-row>
+      <v-col
+        v-for="(people,index) in resultPeopleList"
+        :key="index"
+        cols="12"
+        md="4"
+        lg="3"
+      >
+        <v-img :src="$tool.getResourceUrl('/'+ people)">
+          <template v-slot:placeholder>
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-progress-circular></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -76,7 +106,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class AiImg extends Vue {
+export default class AiCreate extends Vue {
   private loading = true;
 
   private uploadBox = {
@@ -105,7 +135,7 @@ export default class AiImg extends Vue {
     loading: false
   }
 
-  private resultGif = [];
+  private resultPeopleList = [];
 
   mounted() {
     setTimeout(() => {
@@ -114,9 +144,10 @@ export default class AiImg extends Vue {
   }
   private generate() {
     this.uploadBox.loading = true;
+    this.createImgMessage();
     if ((this.$refs.uploadBox as any).validate()) {
       this.$axios.post('/generate_face', this.uploadBox.data).then(res => {
-        this.resultGif = res.pics;
+        this.resultPeopleList = res.pics;
         this.uploadBox.loading = false;
       }).catch(() => {
         this.uploadBox.loading = false;

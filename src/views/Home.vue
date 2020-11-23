@@ -1,8 +1,9 @@
 <template>
   <div>
-    <v-row>
+    <v-row justify="space-around">
       <v-col
         sm="4"
+        lg="3"
         v-for="(card,index) in cardList"
         :key="index"
       >
@@ -22,11 +23,12 @@
               indeterminate
             ></v-progress-linear>
           </template>
+          <v-card-title>{{card.title}}</v-card-title>
           <v-img
             height="250"
             :src="card.img"
+            gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
           ></v-img>
-          <v-card-title>{{card.title}}</v-card-title>
           <v-card-text>{{card.text}}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

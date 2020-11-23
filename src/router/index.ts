@@ -9,7 +9,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     component: LayoutFlow,
-    redirect: '/ai-img',
+    redirect: '/home',
     meta: {
       title: 'AiImg'
     },

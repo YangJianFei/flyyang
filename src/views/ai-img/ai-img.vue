@@ -27,7 +27,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <template v-if="loading">
           <v-skeleton-loader
@@ -86,8 +86,18 @@
         </div>
       </v-col>
       <v-col
-        cols="12"
-        md="6"
+        cols="6"
+        md="4"
+      >
+        <v-img
+          :src="uploadImg.url"
+          max-height="260"
+          contain
+        ></v-img>
+      </v-col>
+      <v-col
+        cols="6"
+        md="4"
       >
         <v-img
           :src="resultGif"
@@ -105,7 +115,7 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class AiImg extends Vue {
   private loading = true;
-  private uploadImg = {
+  private uploadImg: { [key: string]: any } = {
     upPhoto: undefined,
     loading: false,
     infoText: [
@@ -115,7 +125,8 @@ export default class AiImg extends Vue {
       '处理成功！'
     ],
     activeInfoIndex: 0,
-    timer: 0
+    timer: 0,
+    url: ''
   };
 
   private uploadBox = {
@@ -176,21 +187,24 @@ export default class AiImg extends Vue {
   }
   private inputChange(e: any) {
     if (e) {
-      this.uploadImg.loading = true;
-      this.uploadImg.activeInfoIndex = 0;
-      this.createImgMessage();
-      let formData = new FormData();
-      formData.append('files', e);
-      this.$axios.post('/up_photo', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        formData: true
-      }).then(() => {
-        this.uploadImg.loading = false;
-      }).catch(() => {
-        this.uploadImg.loading = false;
-      });
+      if (/^image/.test(e.type)) {
+        this.createObjectUrl(e);
+        this.uploadImg.loading = true;
+        this.uploadImg.activeInfoIndex = 0;
+        this.createImgMessage();
+        let formData = new FormData();
+        formData.append('files', e);
+        this.$axios.post('/up_photo', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          formData: true
+        }).then(() => {
+          this.uploadImg.loading = false;
+        }).catch(() => {
+          this.uploadImg.loading = false;
+        });
+      }
     }
   }
   private createImgMessage() {
@@ -214,6 +228,16 @@ export default class AiImg extends Vue {
       });
     } else {
       this.uploadBox.loading = false;
+    }
+  }
+  private createObjectUrl(file) {
+    let that = this.uploadImg;
+    if (window.FileReader) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        that.url = this.result;
+      }
     }
   }
 }
