@@ -96,6 +96,22 @@ export default class Home extends Vue {
     },
     {
       loading: false,
+      img: require('@/assets/img/ai/ai-img2.jpg'),
+      title: 'Ai Magic',
+      text: 'AI face generation art portrait',
+      url: '/ai-magic',
+      btnText: 'Go Ai Magic'
+    },
+    {
+      loading: false,
+      img: require('@/assets/img/ai/ai-img3.jpg'),
+      title: 'Ai Compose',
+      text: 'Two pictures make a new picture',
+      url: '/ai-compose',
+      btnText: 'Go Ai Compose'
+    },
+    {
+      loading: false,
       img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
       title: 'On My Way',
       text: '......................',

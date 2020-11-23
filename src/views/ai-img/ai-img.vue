@@ -122,7 +122,7 @@ export default class AiImg extends Vue {
       '启动图片标准化处理程序...',
       '图片微调并生成潜向量...',
       '处理中（此过程大约2~3分钟）...',
-      '处理成功！'
+      '处理完成！'
     ],
     activeInfoIndex: 0,
     timer: 0,

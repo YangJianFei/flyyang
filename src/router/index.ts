@@ -30,6 +30,16 @@ const routes: Array<RouteConfig> = [
         component: () => import('../views/ai-create/ai-create.vue')
       },
       {
+        path: 'ai-magic',
+        name: 'AiMagic',
+        component: () => import('../views/ai-magic/ai-magic.vue')
+      },
+      {
+        path: 'ai-compose',
+        name: 'AiCompose',
+        component: () => import('../views/ai-compose/ai-compose.vue')
+      },
+      {
         path: '404',
         name: 'NotFound',
         component: () => import('../components/tip/not-found.vue')
