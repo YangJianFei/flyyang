@@ -60,13 +60,13 @@
             type="number"
             v-model="uploadBox.data.st"
             :rules="uploadBox.rules.st"
-            label="st"
+            label="start"
           ></v-text-field>
           <v-text-field
             type="number"
             v-model="uploadBox.data.ed"
             :rules="uploadBox.rules.ed"
-            label="ed"
+            label="end"
           ></v-text-field>
         </v-form>
         <div class="text-center">
@@ -165,7 +165,13 @@ export default class AiImg extends Vue {
     },
     styleList: [],
     modelNameList: [],
-    loading: false
+    loading: false,
+    infoText: [
+      '加载框架...',
+      '加载模型...',
+      '编辑图片...'
+    ],
+    activeInfoIndex: 0,
   }
 
   private resultGif = '';
@@ -215,7 +221,7 @@ export default class AiImg extends Vue {
       } else {
         this.uploadImg.activeInfoIndex++;
       }
-    }, 1000 * 2);
+    }, 1000 * 30);
   }
   private run() {
     this.uploadBox.loading = true;

@@ -40,6 +40,11 @@ const routes: Array<RouteConfig> = [
         component: () => import('../views/ai-compose/ai-compose.vue')
       },
       {
+        path: 'ai-about',
+        name: 'AiAbout',
+        component: () => import('../views/About.vue')
+      },
+      {
         path: '404',
         name: 'NotFound',
         component: () => import('../components/tip/not-found.vue')

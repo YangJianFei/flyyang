@@ -29,7 +29,7 @@
           width="40"
         />
       </div>
-      <v-toolbar-title class="text-h4">Ai</v-toolbar-title>
+      <v-toolbar-title class="text-h4">AI</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         href="https://github.com/YangJianFei/flyyang"

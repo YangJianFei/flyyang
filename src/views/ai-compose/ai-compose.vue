@@ -16,14 +16,48 @@
       >
         <v-skeleton-loader
           class="mb-6"
-          v-if="loading"
           type="list-item-avatar-two-line"
+        ></v-skeleton-loader>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-skeleton-loader
+          class="mb-6"
+          type="list-item-two-line"
+        ></v-skeleton-loader>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-skeleton-loader
+          class="mb-6"
+          type="list-item-two-line"
+        ></v-skeleton-loader>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-skeleton-loader
+          class="mb-6"
+          type="list-item-two-line"
+        ></v-skeleton-loader>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-skeleton-loader
+          class="mb-6"
+          type="list-item-two-line"
         ></v-skeleton-loader>
       </v-col>
       <v-col cols="12">
         <div class="text-center">
           <v-skeleton-loader
-            v-if="loading"
             style="display:inline-block"
             width="100"
             type="button"
@@ -85,10 +119,10 @@
           md="6"
         >
           <v-text-field
-            type="number"
-            v-model="uploadBox.data.alpha"
+            :value="uploadBox.data.alpha"
             :rules="uploadBox.rules.alpha"
             label="alpha"
+            @input="(value)=>{dataInput(value,'alpha')}"
           ></v-text-field>
         </v-col>
         <v-col
@@ -97,9 +131,10 @@
         >
           <v-text-field
             type="number"
-            v-model="uploadBox.data.beta"
+            :value="uploadBox.data.beta"
             :rules="uploadBox.rules.beta"
             label="beta"
+            @input="(value)=>{dataInput(value,'beta')}"
           ></v-text-field>
         </v-col>
         <v-col
@@ -119,9 +154,10 @@
         >
           <v-text-field
             type="number"
-            v-model="uploadBox.data.trainSteps"
+            :value="uploadBox.data.trainSteps"
             :rules="uploadBox.rules.trainSteps"
             label="train steps"
+            @input="(value)=>{dataInput(value,'trainSteps')}"
           ></v-text-field>
         </v-col>
         <v-col cols="12">
@@ -140,25 +176,36 @@
             >{{uploadBox.loading?uploadBox.infoText[uploadBox.activeInfoIndex]:''}}</div>
           </v-slide-x-transition>
         </v-col>
-        <v-col cols="6">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-img
             :src="uploadBox.urls.content"
             max-height="260"
             contain
           ></v-img>
         </v-col>
-        <v-col cols="6">
+        <v-col
+          cols="12"
+          md="4"
+        >
           <v-img
             :src="uploadBox.urls.style"
             max-height="260"
             contain
           ></v-img>
         </v-col>
-        <v-img
-          :src="$tool.getResourceUrl('/'+ uploadBox.resultUrl)"
-          max-height="260"
-          contain
-        ></v-img>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-img
+            :src="$tool.getResourceUrl('/'+ uploadBox.resultUrl)"
+            max-height="260"
+            contain
+          ></v-img>
+        </v-col>
       </v-row>
     </v-form>
   </div>
@@ -177,10 +224,10 @@ export default class AiCompose extends Vue {
     data: {
       content: undefined,
       style: undefined,
-      alpha: '',
-      beta: '',
-      noise: '',
-      trainSteps: ''
+      alpha: '1',
+      beta: '500',
+      noise: '0.2',
+      trainSteps: '300'
     },
     rules: {
       alpha: [
@@ -286,6 +333,9 @@ export default class AiCompose extends Vue {
         that.urls[type] = this.result;
       }
     }
+  }
+  private dataInput(value, field) {
+    this.uploadBox.data[field] = value.replace(/[^0-9]/g, '');
   }
 }
 </script>

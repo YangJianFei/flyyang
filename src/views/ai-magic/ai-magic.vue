@@ -45,9 +45,9 @@
       >
         <v-img
           class="my-2"
-          v-for="(url,index) in uploadImg.urls"
+          v-for="(name,index) in uploadImg.names"
           :key="index"
-          :src="$tool.getResourceUrl('/'+uploadImg.resultUrl+'/'+ url)"
+          :src="$tool.getResourceUrl('/'+uploadImg.resultUrl+'/'+ name)"
           max-height="260"
           contain
         ></v-img>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row justify="space-around">
+    <v-row>
       <v-col
         sm="4"
         lg="3"
@@ -13,6 +13,7 @@
           type="card,card-heading,actions"
         ></v-skeleton-loader>
         <v-card
+          height="100%"
           v-else
           :loading="card.loading"
         >
@@ -30,6 +31,7 @@
             gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
           ></v-img>
           <v-card-text>{{card.text}}</v-card-text>
+          <v-spacer></v-spacer>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -80,11 +82,19 @@ export default class Home extends Vue {
   private cardList = [
     {
       loading: false,
+      img: require('@/assets/img/ai/ai-img3.jpg'),
+      title: 'AI Compose',
+      text: 'Two pictures make a new picture',
+      url: '/ai-compose',
+      btnText: 'Go AI Compose'
+    },
+    {
+      loading: false,
       img: require('@/assets/img/ai/ai-img.jpg'),
       title: 'AI People Img',
       text: 'A program for deal people face by param.',
       url: '/ai-img',
-      btnText: 'Go Ai Img'
+      btnText: 'Go AI Img'
     },
     {
       loading: false,
@@ -92,23 +102,15 @@ export default class Home extends Vue {
       title: 'AI People Create',
       text: 'A program for product people.',
       url: '/ai-create',
-      btnText: 'Go Ai Create'
+      btnText: 'Go AI Create'
     },
     {
       loading: false,
       img: require('@/assets/img/ai/ai-img2.jpg'),
-      title: 'Ai Magic',
+      title: 'AI Magic',
       text: 'AI face generation art portrait',
       url: '/ai-magic',
-      btnText: 'Go Ai Magic'
-    },
-    {
-      loading: false,
-      img: require('@/assets/img/ai/ai-img3.jpg'),
-      title: 'Ai Compose',
-      text: 'Two pictures make a new picture',
-      url: '/ai-compose',
-      btnText: 'Go Ai Compose'
+      btnText: 'Go AI Magic'
     },
     {
       loading: false,
