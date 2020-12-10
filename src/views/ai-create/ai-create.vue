@@ -112,8 +112,8 @@ export default class AiCreate extends Vue {
   private uploadBox = {
     form: true,
     data: {
-      model: undefined,
-      num: ''
+      model: 'baby',
+      num: '5'
     },
     rules: {
       model: [

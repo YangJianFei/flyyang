@@ -39,7 +39,7 @@
               rounded
               color="primary"
               @click="go(card.url)"
-              :disabled="!card.url"
+              :disabled="!card.url||new Date().getTime()<new Date('2020/12/10 18:00:00').getTime()"
             >{{card.btnText}}</v-btn>
           </v-card-actions>
         </v-card>

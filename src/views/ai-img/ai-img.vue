@@ -47,6 +47,7 @@
             :items="uploadBox.styleList"
             :rules="uploadBox.rules.style"
             label="style"
+            @change="styleChange"
             required
           ></v-select>
           <v-select
@@ -132,10 +133,10 @@ export default class AiImg extends Vue {
   private uploadBox = {
     form: true,
     data: {
-      style: undefined,
-      modelName: undefined,
-      st: '',
-      ed: ''
+      style: 'smile',
+      modelName: 'stylegan_ffhq',
+      st: '3',
+      ed: '-3'
     },
     rules: {
       style: [
@@ -227,7 +228,7 @@ export default class AiImg extends Vue {
     this.uploadBox.loading = true;
     if ((this.$refs.uploadBox as any).validate()) {
       this.$axios.post('/edit_pic', this.uploadBox.data).then(res => {
-        this.resultGif = this.$tool.getResourceUrl(res);
+        this.resultGif = this.$tool.getResourceUrl(res + '?time=' + new Date().getTime());
         this.uploadBox.loading = false;
       }).catch(() => {
         this.uploadBox.loading = false;
@@ -244,6 +245,11 @@ export default class AiImg extends Vue {
       reader.onload = function () {
         that.url = this.result;
       }
+    }
+  }
+  private styleChange(value) {
+    if (value == 'bald' || value == 'bangs' || value == 'wave_hair') {
+      this.uploadBox.data.modelName = 'stylegan_ffhq';
     }
   }
 }
